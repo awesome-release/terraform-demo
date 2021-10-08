@@ -1,0 +1,31 @@
+{
+  "name": "origin_request",
+  "version": "1.0.0",
+  "description": "A lambda@edge implementation of origin request",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm install && npx eslint *.js && echo npx jest --ci --silent --coverage",
+    "deploy": "npm ci"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/releaseapp-io/terraform/tree/master/lambda-edge/config/origin_request"
+  },
+  "keywords": [
+    "lambda@edge",
+    "lambda",
+    "cloudfront",
+    "nodejs",
+    "viewer_request"
+  ],
+  "author": "Release, Inc.",
+  "license": "ISC",
+  "devDependencies": {
+    "aws-sdk": "^2.733.0",
+    "jest": "^26.4.0",
+    "eslint": "^7.12.1"
+  },
+  "dependencies": {
+    "datadog-lambda-js": "^3.27.0"
+  }
+}
