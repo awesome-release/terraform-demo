@@ -1,0 +1,20 @@
+### NOTE
+###
+### Variables in this file will be interpolated by `envsubst` and the file moved to main.tf
+
+provider "aws" {
+  region  = "${TFAPPLY_REGION}"
+}
+
+# terraform {
+#   backend "s3" {
+#     bucket         = "${TFSTATE_BUCKET}"
+#     region         = "${TFSTATE_BUCKET_REGION}"
+#     key            = "terraform-demo/${ENV_ID}"
+#     acl            = "private"
+#     kms_key_id     = "${TFSTATE_KMS_KEY_ID}"
+#     role_arn       = "${TFSTATE_ROLE_ARN}"
+#     encrypt        = true
+#     dynamodb_table = "${TFSTATE_DYNAMO_LOCK_TABLE_NAME}"
+#   }
+# }
