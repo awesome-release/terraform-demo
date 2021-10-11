@@ -37,3 +37,8 @@ variable "runtime" {
   description = "The name of the runtime interpreter."
   default     = "nodejs12.x"
 }
+
+variable "backend_ingress_url" {
+  type        = string
+  description = "Nodejs api backend endpoint."
+}
