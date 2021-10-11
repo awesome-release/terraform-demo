@@ -45,6 +45,7 @@ resource "aws_lambda_function" "this" {
   environment {
     variables = {
       DEBUG = "true"
+      BACKEND_INGRESS_URL = var.backend_ingress_url
     }
   }
 
