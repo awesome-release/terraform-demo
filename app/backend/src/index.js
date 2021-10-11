@@ -18,6 +18,10 @@ server.post("/new-post", validatePost, (req, res) => {
 	res.sendStatus(201);
 });
 
+server.get("/", (req, res) => {
+	res.sendStatus(200);
+});
+
 server.use((err, req, res, next) => {
 	console.error(err.stack);
 	res.status(500).send(err);
