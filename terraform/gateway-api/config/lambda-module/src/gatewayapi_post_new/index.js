@@ -12,11 +12,19 @@ exports.handler = async (event) => {
 		await axios.post(`${BACKEND_INGRESS_URL}/new-post/?name=${name}&message=${message}`);
 
 		return {
-			statusCode: 201
+			statusCode: 201,
+			headers: {
+				"Content-Type": "text/html; charset=utf-8"
+			},
+			body: "<p>Hello world!</p>"
 		};
 	} catch (err) {
 		return {
-			statusCode: 400
+			statusCode: 400,
+			headers: {
+				"Content-Type": "text/html; charset=utf-8"
+			},
+			body: "<p>Hello world!</p>"
 		};
 	}
 };
