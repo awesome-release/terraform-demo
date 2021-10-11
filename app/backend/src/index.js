@@ -9,11 +9,10 @@ const { validatePost } = require("./middleware/validate-post");
 
 const server = express();
 
-server.use(express.json());
 server.use(cors());
 
-morgan.token("body", (req, res) => JSON.stringify(req.body));
-server.use(morgan(":method :url :status :response-time ms - :body"));
+morgan.token("query", (req, res) => JSON.stringify(req.query));
+server.use(morgan(":method :url :status :response-time ms - :query"));
 
 server.post("/new-post", validatePost, (req, res) => {
 	res.sendStatus(201);
