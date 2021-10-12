@@ -5,3 +5,7 @@ module "gateway-api" {
   tld_name            = var.tld_name
   certificate_arn     = var.certificate_arn
 }
+
+output "gatewayapi_post_new_url" {
+  value = "curl -XPOST '${module.gateway-api.base_url}/new-post?name=Alice&message=Watson+come+here+I+need+you'"
+}
