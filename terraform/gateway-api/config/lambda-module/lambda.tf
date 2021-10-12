@@ -5,9 +5,7 @@ locals {
 
 resource "null_resource" "build" {
   triggers = {
-    indexjs         = filebase64sha256("${local.source_dir}/index.js")
-    packageJSON     = filebase64sha256("${local.source_dir}/package.json")
-    packageLockJSON = filebase64sha256("${local.source_dir}/package-lock.json")
+    timestamp = timestamp()
   }
 
   provisioner "local-exec" {
@@ -35,7 +33,7 @@ resource "aws_lambda_function" "this" {
   description      = "Created by terraform"
   memory_size      = var.memory_size
   timeout          = var.timeout
-  function_name    = var.function_name
+  function_name    = join("-", [var.namespace, var.function_name])
   role             = var.lambda_iam_role_arn
   handler          = var.handler
   runtime          = var.runtime

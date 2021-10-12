@@ -5,7 +5,7 @@ locals {
 }
 
 resource "aws_iam_role" "execution_role" {
-  name = "iam_for_lambdaAPIgw"
+  name = "${var.namespace}_iam_for_lambdaAPIgw"
 
   assume_role_policy = <<EOF
 {
@@ -52,7 +52,7 @@ data "aws_iam_policy_document" "execution_role" {
 }
 
 resource "aws_iam_policy" "execution_role" {
-  name   = "lambdaAPIgwPolicy"
+  name   = "${var.namespace}-lambdaAPIgwPolicy"
   path   = "/"
   policy = data.aws_iam_policy_document.execution_role.json
 }

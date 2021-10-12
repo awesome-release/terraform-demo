@@ -42,3 +42,8 @@ variable "backend_ingress_url" {
   type        = string
   description = "Nodejs api backend endpoint."
 }
+
+variable "namespace" {
+  type = string
+  description = "The namespace for multiple environment support."
+}

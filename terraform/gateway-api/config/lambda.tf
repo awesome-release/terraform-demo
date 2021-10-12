@@ -1,5 +1,6 @@
 locals {
-  mylambda_function_name = "gatewayapi_post_new"
+  mylambda_function_name      = "gatewayapi_post_new"
+  mylambda_function_namespace = join("-", [var.namespace, local.mylambda_function_name])
 }
 module "post_new" {
   source = "./lambda-module/"
@@ -10,20 +11,21 @@ module "post_new" {
   memory_size         = 512
   timeout             = 3
   backend_ingress_url = var.backend_ingress_url
+  namespace           = var.namespace
 }
 
 # See https://stackoverflow.com/a/52116074
 data "aws_lambda_function" "post_new" {
-  function_name = local.mylambda_function_name
+  function_name = local.mylambda_function_namespace
   qualifier     = module.post_new.version
 }
 
 resource "aws_lambda_permission" "post_new" {
-  statement_id  = "AllowAPIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = data.aws_lambda_function.post_new.arn
-  principal     = "apigateway.amazonaws.com"
-  qualifier     = data.aws_lambda_function.post_new.version
+  statement_id_prefix = var.namespace
+  action              = "lambda:InvokeFunction"
+  function_name       = data.aws_lambda_function.post_new.arn
+  principal           = "apigateway.amazonaws.com"
+  qualifier           = data.aws_lambda_function.post_new.version
 
   # The "/*/*" portion grants access from any method on any resource
   # within the API Gateway REST API.

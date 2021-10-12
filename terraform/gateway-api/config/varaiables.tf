@@ -5,7 +5,6 @@ locals {
 variable "namespace" {
   type        = string
   description = "The namespace for this module."
-  default     = "default"
 }
 
 variable "stage_name" {
