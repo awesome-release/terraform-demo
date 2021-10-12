@@ -9,6 +9,7 @@ module "post_new" {
   lambda_iam_role_arn = aws_iam_role.execution_role.arn
   memory_size         = 512
   timeout             = 3
+  backend_ingress_url = var.backend_ingress_url
 }
 
 # See https://stackoverflow.com/a/52116074

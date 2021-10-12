@@ -15,7 +15,7 @@ resource "aws_api_gateway_rest_api" "this" {
 resource "aws_api_gateway_resource" "new" {
   rest_api_id = aws_api_gateway_rest_api.this.id
   parent_id   = aws_api_gateway_rest_api.this.root_resource_id
-  path_part   = "metrics"
+  path_part   = "new-post"
 }
 
 resource "aws_api_gateway_method" "post_new" {
@@ -79,7 +79,7 @@ resource "aws_api_gateway_deployment" "this" {
 }
 
 resource "aws_api_gateway_domain_name" "this" {
-  certificate_arn = data.aws_acm_certificate.tld.arn
+  certificate_arn = var.certificate_arn
   domain_name     = local.api_hostname
 }
 
