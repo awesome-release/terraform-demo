@@ -2,17 +2,34 @@
 
 const axios = require("axios");
 
-// Assuming terraform will create the env var when it makes the lambda resource?
 const BACKEND_INGRESS_URL = process.env.BACKEND_INGRESS_URL;
 
 exports.handler = async (event) => {
-	const { name, message } = event["params"]["querystring"];
+	let [name, message] = ["", ""];
+
+	if (event.queryStringParameters) {
+		name = event.queryStringParameters.name;
+		message = event.queryStringParameters.message;
+	} else if (event.body) {
+		const reqBody = JSON.parse(event.body);
+
+		name = reqBody.name;
+		message = reqBody.message;
+	} else {
+		return {
+			statusCode: 400,
+			headers: {
+				"Content-Type": "text/html; charset=utf-8"
+			},
+			body: "<p>Invalid request format.</p>"
+		};
+	}
 
 	try {
 		await axios.post(`${BACKEND_INGRESS_URL}/new-post/?name=${name}&message=${message}`);
 
 		return {
-			statusCode: 201,
+			statusCode: 200,
 			headers: {
 				"Content-Type": "text/html; charset=utf-8"
 			},
