@@ -7,5 +7,5 @@ module "gateway-api" {
 }
 
 output "gatewayapi_post_new_url" {
-  value = "curl -XPOST '${module.gateway-api.base_url}/new-post?name=Alice&message=Watson+come+here+I+need+you'"
+  value = "curl -XPOST '${module.gateway-api.base_url}/new-post?message=Watson+come+here+I+need+you'"
 }

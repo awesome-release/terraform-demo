@@ -5,43 +5,42 @@ const axios = require("axios");
 const BACKEND_INGRESS_URL = process.env.BACKEND_INGRESS_URL;
 
 exports.handler = async (event) => {
-	let [name, message] = ["", ""];
+	let message = "";
 
+	// Obtain payload from query params or body.
 	if (event.queryStringParameters) {
-		name = event.queryStringParameters.name;
 		message = event.queryStringParameters.message;
 	} else if (event.body) {
 		const reqBody = JSON.parse(event.body);
 
-		name = reqBody.name;
 		message = reqBody.message;
 	} else {
 		return {
 			statusCode: 400,
 			headers: {
-				"Content-Type": "text/html; charset=utf-8"
+				"Content-Type": "application/json; charset=utf-8"
 			},
-			body: "<p>Invalid request format.</p>"
+			body: JSON.stringify({ error: "Invalid request format." })
 		};
 	}
 
 	try {
-		await axios.post(`${BACKEND_INGRESS_URL}/new-post/?name=${name}&message=${message}`);
+		await axios.post(`${BACKEND_INGRESS_URL}/new-post/?message=${message}`);
 
 		return {
 			statusCode: 200,
 			headers: {
-				"Content-Type": "text/html; charset=utf-8"
+				"Content-Type": "application/json; charset=utf-8"
 			},
-			body: "<p>Message received!</p>"
+			body: JSON.stringify({ message: "Request received." })
 		};
 	} catch (err) {
 		return {
-			statusCode: 400,
+			statusCode: 500,
 			headers: {
-				"Content-Type": "text/html; charset=utf-8"
+				"Content-Type": "application/json; charset=utf-8"
 			},
-			body: "<p>Error</p>"
+			body: JSON.stringify(err.stack)
 		};
 	}
 };
