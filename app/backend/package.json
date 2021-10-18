@@ -6,7 +6,7 @@
 	"private": true,
 	"scripts": {
 		"start": "node src/index.js",
-		"dev": "nodemon src/index.js --inspect=0.0.0.0:9229"
+		"dev": "nodemon src/index.js"
 	},
 	"author": "Michael Nunes",
 	"license": "MIT",

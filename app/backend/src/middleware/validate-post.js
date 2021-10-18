@@ -1,10 +1,10 @@
 function validatePost(req, res, next) {
-	const { name, message } = req.query;
+	const { message } = req.query;
 
-	if (name && message) {
+	if (message && message.length > 0) {
 		next();
 	} else {
-		res.status(400).send({ error: "Missing parameter(s) in request." });
+		res.status(400).send({ error: "Message missing in request." });
 	}
 }
 
