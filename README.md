@@ -1,10 +1,10 @@
 # Terraform
 
-This project demonstrates the usage of Terraform on Release. It handles the creation of an AWS Gateway API and Lambda function that forwards all requests to a dockerized Node.js API where it is then logged.
+This project demonstrates the usage of Terraform on Release. It handles the creation of an AWS Gateway API and Lambda function that forwards all requests to a dockerized Node.js API where it is then logged and sent to a slack channel.
 
 ![arch](./assets/architecture.png)
 
-To make this project run in [Release](https://releaseapp.io), simply create a new application with this repository, and follow the instructions below when creating the application template.
+To make this project run in [Release](https://releaseapp.io), simply create a new application with this repository, and follow the instructions below when creating the application template and configuring the env variables.
 
 # Application Template Setup
 
@@ -57,7 +57,7 @@ workflows:
 
 # Environment Variables
 
-Copy the following env variables and fill in values as necessary.
+Copy the following env variables and fill in their values.
 
 ```
 ...
@@ -106,7 +106,7 @@ Upon successful deployment, there should be 4 instances in the `details` tab of 
 - terraform - This container is the context for the runner. The terminal can be used to interact with Terraform and tear down the created AWS resources, among other things.
 - terraform-runner - This is the terraform script job.
 
-The terraform-runner instance will output the URL of the Gateway API in the logs:
+The terraform-runner instance will output the URL of the newly created Gateway API in the logs:
 
 ![terraform](./assets/terraform-output.png)
 
@@ -114,7 +114,7 @@ You can then curl it with a POST request like so:
 
 `curl -X POST "https://<app id>.execute-api.<region>.amazonaws.com/v1/new-post?message=Watson+come+here+I+need+you"`
 
-The request will trigger the lambda function and make a request to the node api. You can verify this by checking the backend logs for your message, and slack if you have enabled it in the env config:
+The request will trigger the lambda function to then make a request to the node api. You can verify this by checking the backend logs for your message, and slack if you have enabled it in the env config:
 
 ![output](./assets/backend-log.png)
 
