@@ -25,6 +25,9 @@ services:
 ...
 ```
 
+> **_NOTE:_**  This terraform service is a "dummy" service used only for the job runner in the next step. If you enable this service in the workflows section below, you can use the container as a shell location to execute debuging/troulbeshooting commands (like `terraform output` as one example.)
+
+
 Below the services section, add a `jobs` section with a job to run the terraform script. Make sure the `from_services` field points to the service `name` created from the previous step:
 
 ```
@@ -35,10 +38,15 @@ jobs:
   from_services: terraform
   args:
   - apply -auto-approve
+- name: terraform-destroyer
+  completed_timeout: 900
+  from_services: terraform
+  args:
+  - destroy -auto-approve
 ...
 ```
 
-Lastly, modify the `workflows` section and add the job that was created in the previous step:
+Lastly, modify the `workflows` section and add the jobs that were created in the previous step:
 
 ```
 ...
@@ -46,12 +54,16 @@ workflows:
 - name: setup
   order_from:
   - jobs.terraform-runner
-  - services.terraform
+  - services.terraform       # optional
   - services.backend
 - name: patch
   order_from:
   - jobs.terraform-runner
   - services.backend
+- name: teardown
+  order_from:
+  - jobs.terraform-destroyer
+  - release.remove_environment
 ...
 ```
 
@@ -67,9 +79,8 @@ services:
     value: production
   - key: PORT
     value: '3000'
-  # Set to 0 to disable slack messaging.
   - key: SLACK_ACTIVE
-    value: 1
+    value: '1'                  # Set to 0 to disable slack messaging.
   - key: SLACK_TOKEN
     value: <slack token>
   - key: SLACK_CHANNEL_ID
